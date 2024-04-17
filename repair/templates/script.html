@@ -1,0 +1,84 @@
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('payButton').addEventListener('click', function() {
+            var price = parseFloat(this.getAttribute('data-price'));
+            var user_id = '{{ user.id }}';
+            var product_id = '{{ product_id }}';
+
+            var options = {
+                "key": "rzp_test_pXtAk0XSRYeIWR",
+                "amount": price * 100,
+                "currency": "INR",
+                "name": "Your Company Name",
+                "description": "Payment for Product",
+                "handler": function(response) {
+                    storeTransaction(user_id, product_id, price);
+                },
+                "prefill": {
+                    "name": '{{ user.username }}',
+                    "email": '{{ user.email }}'
+                },
+                "theme": {
+                    "color": "#F37254"
+                }
+            };
+            
+            var rzp = new Razorpay(options);
+            rzp.open();
+        });
+    });
+
+
+
+
+
+    function storeTransaction(user_id, product_id, price) {
+    var csrftoken = getCookie('csrftoken');
+
+    fetch('/store_transaction/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({
+            user_id: user_id,
+            product_id: product_id,
+            price: price
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('An error occurred while processing the payment.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+
+        // Redirect to success page after a brief delay
+        setTimeout(function() {
+            window.location.href = '/success_page/';
+        }, 1000); // Redirect after 1 second (adjust delay as needed)
+    })
+    .catch(error => {
+        console.error(error.message);
+    });
+}
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>

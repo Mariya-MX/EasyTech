@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+</head>
+<body>
+
+    <!-- Add text fields for name, phone number, address, and description -->
+    <form method="post" action="{% url 'book_appointment' %}">
+
+        {% csrf_token %}
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        
+        <label for="phone">Phone Number:</label><br>
+        <input type="text" id="phone" name="phone"><br>
+        
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address"><br>
+        
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50"></textarea><br>
+        
+        <input type="hidden" name="availability_id" value="{{ availability.id }}">
+        <input type="hidden" name="technician_id" value="{{ technician_id }}">
+        <input type="hidden" name="user_email" value="{{ user_email }}">
+        <input type="hidden" name="date" id="date" value="{{ date|date:'Y-m-d' }}">
+
+        <input type="hidden" name="time_slot" value="{{ time_slot }}">
+
+        <button type="submit">Submit</button>
+
+    </form>
+
+   
+
+</body>
+</html>

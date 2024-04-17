@@ -1,0 +1,302 @@
+
+{% load static %}
+<!DOCTYPE html>
+<!-- Coding by CodingNepal | www.codingnepalweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> Responsiive Admin Dashboard | CodingLab </title>
+    <link rel="stylesheet" href="{% static 'css/admin.css'%}">
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+   
+     <style>
+      /* Add this CSS to your existing stylesheet or create a new one */
+      /* Add this CSS to your existing stylesheet or create a new one */
+
+.form-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  max-width: 400px; /* Adjust the maximum width of the form container */
+  margin: 0 auto; /* Center the form container horizontally */
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: calc(100% - 20px); /* Adjust the width of the input fields */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Adjust the styles for radio buttons */
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+/* Adjust the styles for the submit button */
+#submitBtn {
+  background: #0A2558;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%; /* Make the submit button full width */
+}
+
+#submitBtn:hover {
+  background: #081D45;
+}
+
+
+
+.messages {
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+}
+
+.messages li {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+
+
+
+
+
+/* Add this CSS to your existing stylesheet or create a new one */
+.table-container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+
+     </style>
+   </head>
+<body>
+  <div class="sidebar">
+    
+      <ul class="nav-links">
+        <li>
+          <a href="{% url 'custom_admin_panel' %}" class="active">
+            <i class='bx bx-grid-alt' ></i>
+            <span class="links_name">Dashboard</span>
+          </a>
+        </li>
+
+
+        <li>
+          <a href="{% url 'userlist' %}" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Users</span>
+          </a>
+        </li>
+
+
+        <li>
+          <a href="{% url 'approval'%}" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Technicians</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{% url 'approved'%}" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Approved Technician</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Analysis</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{% url 'admin_feedback'%}" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Feedback</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{% url 'admin_delivery'%}" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Add</span>
+          </a>
+        </li>
+
+
+        <li>
+          <a href="{% url 'delivery_list'%}" class="active">
+            <i class="bx bxs-truck"></i>
+            <span class="links_name">Delivery list</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{% url 'orders' %}" class="active">
+            <i class="bx bx-package"></i>
+            <span class="links_name">Orders</span>
+          </a>
+        </li>
+
+
+		
+        <li class="log_out">
+          <a href="{% url 'logout' %}" id="logout-link" style="color: white;">
+            <i class='bx bx-log-out'></i>
+            <span class="">Log out</span>
+          </a>
+        </li>
+      </ul>
+  </div>
+  <section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Admin Dashboard</span>
+      </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    <br>
+    
+
+     <div class="table-container">
+        <h2>Orders</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Timestamp</th>
+                    <th>Owner Name</th> 
+                    <th>user Address</th>
+                    <th>owner Address</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.user }}</td>
+                    <td>{{ transaction.product }}</td>
+                    <td>{{ transaction.price }}</td>
+                    <td>{{ transaction.timestamp }}</td>
+                    <td>{{ transaction.product.owner.username }}</td>
+                   
+                    <td>
+                        {% if transaction.user.useraddress_set.exists %}
+                            {{ transaction.user.useraddress_set.first.address }}<br>
+                            {{ transaction.user.useraddress_set.first.state }}
+                            ,{{ transaction.user.useraddress_set.first.district }}<br>
+                            Pincode: {{ transaction.user.useraddress_set.first.pincode }}
+                        {% endif %}
+                    </td>
+                    <td>
+                      {% if transaction.product.owner.useraddress_set.exists %}
+                          {{ transaction.product.owner.useraddress_set.first.address }}<br>
+                          {{ transaction.product.owner.useraddress_set.first.state }},
+                          {{ transaction.product.owner.useraddress_set.first.district }}<br>
+                          Pincode: {{ transaction.product.owner.useraddress_set.first.pincode }}
+                      {% else %}
+                          No address available
+                      {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div> 
+    
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

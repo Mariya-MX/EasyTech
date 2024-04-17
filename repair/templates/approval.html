@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> Responsive Admin Dashboard | CodingLab </title>
+    <link rel="stylesheet" href="{% static 'css/users.css'%}">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+     <style>
+/* Add/replace this in your existing users.css file */
+.profile-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column; /* Align items in a column */
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Set a fixed width for consistent alignment */
+}
+
+.profile-details img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.user-info {
+  color: #333;
+}
+
+.user-info h2 {
+  font-size: 16px;
+}
+
+.user-info p {
+  font-size: 12px;
+}
+
+.action-buttons {
+  align-content: center;
+ 
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end; /* Align buttons to the end of the container */
+}
+
+.approve-button,
+.reject-button {
+  background-color: #2ecc71;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.reject-button {
+  background-color: #e74c3c; /* Red for rejection */
+}
+
+.approve-button:hover,
+.reject-button:hover {
+  background-color: #27ae60; /* Darker green for approval, Darker red for rejection on hover */
+}
+
+/* Add this in your existing style block */
+.approved {
+  background-color: #3498db; /* Change this to the desired blue color */
+  cursor: not-allowed; /* Optional: Change cursor to indicate it's disabled */
+}
+
+
+     </style>
+   </head>
+   <body>
+     <div class="sidebar">
+       <ul class="nav-links">
+         <li>
+           <a href="{% url 'custom_admin_panel' %}" class="active">
+             <i class='bx bx-grid-alt' ></i>
+             <span class="links_name">Dashboard</span>
+           </a>
+         </li>
+         <li>
+           <a href="{% url 'userlist' %}" class="active">
+             <i class='bx bx-user'></i>
+             <span class="links_name">Users</span>
+           </a>
+         </li>
+         <li>
+           <a href="{% url 'approval'%}" class="active">
+             <i class='bx bx-user'></i>
+             <span class="links_name">Technicians</span>
+           </a>
+         </li>
+
+
+         <li>
+          <a href="{% url 'approved'%}" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Approved Technician</span>
+          </a>
+        </li>
+
+        
+        <li>
+          <a href="" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Analysis</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{% url 'admin_feedback'%}" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Feedback</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{% url 'admin_delivery'%}" class="active">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Add</span>
+          </a>
+        </li>
+
+         
+         <li class="log_out">
+           <a href="{% url 'logout' %}" id="logout-link" style="color: white;">
+             <i class='bx bx-log-out'></i>
+             <span class="">Log out</span>
+           </a>
+         </li>
+       </ul>
+     </div>
+     <section class="home-section">
+       <nav>
+         <div class="sidebar-button">
+           <i class='bx bx-menu sidebarBtn'></i>
+           <span class="dashboard">Admin Dashboard</span>
+         </div>
+       </nav>
+       <div class="home-content">
+         {% for technician_profile in technician_profiles %}
+         <div class="profile-card">
+           <div class="profile-details">
+             <img src="{{ technician_profile.tech_image.url }}" alt="Technician Image">
+             <div class="user-info">
+               <h2>{{ technician_profile.tech_first_name }} {{ technician_profile.tech_last_name }}</h2>
+               <p>Email: {{ technician_profile.tech_email }}</p>
+               <p>Service: {{ technician_profile.service }}</p>
+               <p>Experience: {{ technician_profile.experience }} years</p>
+               <p>District: {{ technician_profile.district }}</p>
+               <p>
+                Resume: <a href="{{ technician_profile.resume.url }}" target="_blank">Download Resume</a>
+              </p>
+              <p>
+                ID Proof: <a href="{{ technician_profile.id_proof.url }}" target="_blank">Download ID Proof</a>
+              </p>
+             </div>
+             <div class="action-buttons" >
+              <form method="post" action="{% url 'approve_technician' technician_profile.id %}">
+                {% csrf_token %}
+                <button type="submit" class="approve-button {% if technician_profile.is_approved %}approved{% endif %}">
+                    {% if technician_profile.is_approved %}Approved{% else %}Approve{% endif %}
+                </button>
+              </form>
+             
+              <!-- <form method="post" action="{% url 'approve_technician' technician_profile.id %}">
+                {% csrf_token %}
+                
+                <button type="submit" class="approve-button">Approve</button>
+                
+            </form> -->
+
+            <form method="post" action="{% url 'reject_technician' technician_profile.id %}">
+              {% csrf_token %}
+              <button type="submit" class="reject-button">Reject</button>
+          </form>
+          
+          </div>
+           </div>
+         </div>
+         {% endfor %}
+       </div>
+     </section>
+    
+   </body>
+</html>
